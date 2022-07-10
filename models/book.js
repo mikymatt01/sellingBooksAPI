@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+Schema = mongoose.Schema;
 
-const bookSchema = new mongoose.Schema({
+const bookSchema = new Schema({
     isbn: {
         type:String,
         required:true,
@@ -39,6 +40,10 @@ const bookSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }
 });
 
 module.exports =  mongoose.model('Book', bookSchema);

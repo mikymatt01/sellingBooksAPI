@@ -25,10 +25,10 @@ router.post("/login", function(req, res){
         console.log(user);
         if (err) throw err;
         if (!user || !user.comparePassword(req.body.password)) {
-          return res.status(401).json({ message: 'Authentication failed. Invalid user or password.' });
+          return res.status(401).send({ message: 'Authentication failed. Invalid user or password.' });
         }
         console.log(user.comparePassword(req.body.password));
-        return res.send({ token: jwt.sign({ email: user.email, fullName: user.fullName, _id: user._id }, 'RESTFULAPIs') });
+        return res.send({ token: jwt.sign({ email: user.email, fullName: user.fullName, _id: user._id }, process.env.TOKEN_KEY,{expiresIn:process.env.TOKEN_EXPIRES,}) });
       });
 });
 

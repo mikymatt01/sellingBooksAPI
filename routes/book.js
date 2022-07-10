@@ -1,20 +1,27 @@
 var router = require('express').Router(); 
 const Book = require('../models/book');
 const fs = require('fs');
-
+const auth = require("../middleware/auth");
+var uuid = require('uuid');
 //create book
-router.post("/", function(req, res){ 
+router.post("/", auth, function(req, res){ 
 
     var data = req.body["immagine"]['contenuto'].replace(/^data:image\/\w+;base64,/, "");
     var buf = Buffer.from(data, 'base64');
-    var name = process.env.MEDIA + req.body["immagine"]['nome'] + '.jpg';
-
-    fs.writeFile(name, buf,() => 
-        console.log('download finito!')
-    );
-
+    var name = process.env.MEDIA + uuid.v4() + '.jpg';
+    try {
+        while(fs.existsSync(name))name = process.env.MEDIA + uuid.v4() + '.jpg';
+        fs.writeFile(name, buf,() => 
+            console.log('download finito!')
+        );
+      } catch(err) {
+        console.error(err)
+      }
     req.body['immagine'] = process.env.URL + name;
-    var book = new Book(req.body);
+    req.body['owner'] = req.user._id
+    var book = new Book(
+        req.body
+    );
     book.save(function(err, doc) {
         if(err){
             res.send({"success":false,"message":err.message});
@@ -32,9 +39,9 @@ router.get("/:id",async function(req, res){
 })
 
 //delete book by ISBN
-router.get("/delete/:id", function(req, res){
+router.get("/delete/:id", auth, function(req, res){
     
-    Book.deleteOne({ isbn: req.params['id']})
+    Book.deleteOne({ isbn: req.params['id'], owner: req.user._id})
     .then(function(){
         res.send({"success":true, "message":""});// Success
     }).catch(function(error){

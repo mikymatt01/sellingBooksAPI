@@ -16,10 +16,9 @@ app.use('/images', express.static('images'));
 app.use('/book', bookRoute);
 app.use('/user', userRoute);
 
-
-mongoose.connect(uri, ()=>{
-	console.log("connect DB!");
-});
+mongoose.connect(uri)
+.catch(error => console.log(error))
+.then(_ => console.log("successfully connect"));
 
 app.listen(port, ()=>{
 	console.log(`Example app listening on port ${port}`)
