@@ -1,14 +1,20 @@
 var express = require('express');
 var app = express();
+
 const bookRoute = require('./routes/book');
+const userRoute = require('./routes/user');
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
-var port = 3000;
-const uri = "mongodb://127.0.0.1:27017/example?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.0";
+var port = process.env.PORT;
+const uri = process.env.MONGO_URL;
 
 app.use(bodyParser.json());
+app.use('/images', express.static('images'));
 app.use('/book', bookRoute);
+app.use('/user', userRoute);
 
 
 mongoose.connect(uri, ()=>{
