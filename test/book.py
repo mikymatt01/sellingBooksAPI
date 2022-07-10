@@ -1,24 +1,8 @@
 import requests
 import json
+from test import url
 
-url = "http://127.0.0.1:8080/"
-def register():
-    obj = {
-        "fullName":"michele",
-        "email":"mikymattiello@live.com",
-        "password":"Computer2001",
-    }
-    r = requests.post(url + "user/register/", json=obj)
-    print(r.text)
-
-def login():
-    obj = {
-        "fullName":"michele",
-        "email":"mikymattiello@live.com",
-        "password":"Computer2001",
-    }
-    r = requests.post(url + "user/login/", json=obj)
-    return json.loads(r.text)["token"]
+url = url + 'book'
 
 def create(token):
     obj={
@@ -26,7 +10,6 @@ def create(token):
         "titolo":"Il pensiero che conta. Per i Licei e gli Ist. magistrali. La filosofia contemporanea (Vol. 3)",
         "condizione":1,
         "prezzo":8.00,
-        "venditore":"Riccardo Codroico Luceri",
         "numero":"3773795291",
         "whatsapp":"https://api.whatsapp.com/send?phone=3773795283&text=ciao%20sono%20interessato%20ad%20il%20tuo%20libro",
         "immagine":{
@@ -37,13 +20,13 @@ def create(token):
     headers={
         "x-access-token" : token
     }
-    r = requests.post(url + 'book', json=obj, headers=headers)
+    r = requests.post(url, json=obj, headers=headers)
     print(r.text)
 
 def getBookByIsbn():
     id="9788839534187"
 
-    r = requests.get(url + 'book/' + id)
+    r = requests.get(url + '/' + id)
     print(r.text)
 
 
@@ -52,21 +35,13 @@ def deleteBookByIsbn(token):
     headers={
         "x-access-token" : token
     }
-    r = requests.get(url + 'book/delete/' + id, headers=headers)
+    r = requests.get(url + '/delete/' + id, headers=headers)
     print(r.text)
 
-def test(token):
+def myBooks(token):
     id="9788839534187"
     headers={
         "x-access-token" : token
     }
-    r = requests.get(url + 'book/test/', headers=headers)
+    r = requests.get(url + '/', headers=headers)
     print(r.text)
-
-if __name__ in '__main__':
-    #register()
-    token=login()
-    #test(token)
-    #create(token)
-    #getBookByIsbn()
-    #deleteBookByIsbn(token)

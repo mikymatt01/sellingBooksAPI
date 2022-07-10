@@ -20,10 +20,6 @@ const bookSchema = new Schema({
         type:Number,
         required:true
     },
-    venditore: {
-        type:String,
-        required:true
-    },
     pubblicato: {
         type:Date,
         default: Date.now
@@ -40,7 +36,7 @@ const bookSchema = new Schema({
         type:String,
         required:true
     },
-    owner: {
+    venditore: {
         type: Schema.Types.ObjectId,
         ref: "User"
     }

@@ -3,6 +3,7 @@ const Book = require('../models/book');
 const fs = require('fs');
 const auth = require("../middleware/auth");
 var uuid = require('uuid');
+
 //create book
 router.post("/", auth, function(req, res){ 
 
@@ -18,7 +19,7 @@ router.post("/", auth, function(req, res){
         console.error(err)
       }
     req.body['immagine'] = process.env.URL + name;
-    req.body['owner'] = req.user._id
+    req.body['venditore'] = req.user._id
     var book = new Book(
         req.body
     );
@@ -32,6 +33,12 @@ router.post("/", auth, function(req, res){
     });
 })
 
+//get books by seller
+router.get("/", auth, async function(req, res){
+    const books = await Book.find({venditore:req.user._id});
+    res.send(books);
+})
+
 //get book by ISBN
 router.get("/:id",async function(req, res){
     const book = await Book.find({isbn:req.params['id']});
@@ -41,7 +48,7 @@ router.get("/:id",async function(req, res){
 //delete book by ISBN
 router.get("/delete/:id", auth, function(req, res){
     
-    Book.deleteOne({ isbn: req.params['id'], owner: req.user._id})
+    Book.deleteOne({ isbn: req.params['id'], venditore: req.user._id})
     .then(function(){
         res.send({"success":true, "message":""});// Success
     }).catch(function(error){

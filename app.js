@@ -3,6 +3,7 @@ var app = express();
 
 const bookRoute = require('./routes/book');
 const userRoute = require('./routes/user');
+const favoriteRoute = require('./routes/favorite');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -14,6 +15,7 @@ const uri = process.env.MONGO_URL;
 app.use(bodyParser.json());
 app.use('/images', express.static('images'));
 app.use('/book', bookRoute);
+app.use('/favorite', favoriteRoute);
 app.use('/user', userRoute);
 
 mongoose.connect(uri)
