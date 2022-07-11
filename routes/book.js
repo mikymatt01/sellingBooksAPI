@@ -45,10 +45,10 @@ router.get("/:id",async function(req, res){
     res.send(book);
 })
 
-//delete book by ISBN
+//delete book by id
 router.get("/delete/:id", auth, function(req, res){
     
-    Book.deleteOne({ isbn: req.params['id'], venditore: req.user._id})
+    Book.deleteOne({ _id: req.params['id'], venditore: req.user._id})
     .then(function(){
         res.send({"success":true, "message":""});// Success
     }).catch(function(error){

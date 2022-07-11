@@ -16,4 +16,6 @@ const favoriteSchema = new Schema({
     }
 });
 
+favoriteSchema.index({ utente: 1, libro: 1 },{unique: true}); // schema level
+
 module.exports =  mongoose.model('Favorite', favoriteSchema);

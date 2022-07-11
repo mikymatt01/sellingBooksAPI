@@ -5,8 +5,6 @@ const bookSchema = new Schema({
     isbn: {
         type:String,
         required:true,
-        unique : true,
-        dropDups: true
     },
     titolo: {
         type:String,

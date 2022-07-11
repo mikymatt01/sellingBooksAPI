@@ -1,21 +1,30 @@
 import requests
 import json
+from dotenv import dotenv_values
 
-url = "http://127.0.0.1:8080/favorite"
+config = dotenv_values("../.env")
+url = config['URL'] + "favorite/"
 
-def create(token, id):
-    obj={
-        "id":id,
-    }
+def create(token, _id):
     headers={
         "x-access-token" : token
     }
-    r = requests.post(url, json=obj, headers=headers)
-    print(r.text)
+    r = requests.get(url + _id, headers=headers)
+    print("saveBook response: " + r.text, end="\n\n")
+    return json.loads(r.text)
+
+def delete(token, _id):
+    headers={
+        "x-access-token" : token
+    }
+    r = requests.get(url + 'delete/' + _id, headers=headers)
+    print("deleteBook response: " + r.text, end="\n\n")
+    return json.loads(r.text)
 
 def myBooks(token):
     headers={
         "x-access-token" : token
     }
     r = requests.get(url, headers=headers)
-    print(r.text)
+    print("savedBooks response: " + r.text, end="\n\n")
+    return json.loads(r.text)

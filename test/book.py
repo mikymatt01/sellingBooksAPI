@@ -1,8 +1,9 @@
 import requests
 import json
-from test import url
+from dotenv import dotenv_values
 
-url = url + 'book'
+config = dotenv_values("../.env")
+url = config['URL'] + 'book'
 
 def create(token):
     obj={
@@ -21,14 +22,15 @@ def create(token):
         "x-access-token" : token
     }
     r = requests.post(url, json=obj, headers=headers)
-    print(r.text)
+    print("createBook response: " + r.text, end="\n\n")
+    return json.loads(r.text)
 
 def getBookByIsbn():
     id="9788839534187"
 
     r = requests.get(url + '/' + id)
-    print(r.text)
-
+    print("bookByIsbn response: " + r.text, end="\n\n")
+    return json.loads(r.text)
 
 def deleteBookByIsbn(token):
     id="9788839534187"
@@ -36,7 +38,8 @@ def deleteBookByIsbn(token):
         "x-access-token" : token
     }
     r = requests.get(url + '/delete/' + id, headers=headers)
-    print(r.text)
+    print("deleteBook response: " + r.text, end="\n\n")
+    return json.loads(r.text)
 
 def myBooks(token):
     id="9788839534187"
@@ -44,4 +47,5 @@ def myBooks(token):
         "x-access-token" : token
     }
     r = requests.get(url + '/', headers=headers)
-    print(r.text)
+    print("myBook response: " + r.text, end="\n\n")
+    return json.loads(r.text)

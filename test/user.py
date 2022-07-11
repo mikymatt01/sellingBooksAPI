@@ -1,7 +1,9 @@
 import requests
 import json
-from test import url
-url = url + 'user'
+from dotenv import dotenv_values
+
+config = dotenv_values("../.env")
+url = config['URL'] + 'user'
 
 def register():
     obj = {
@@ -10,7 +12,7 @@ def register():
         "password":"Computer2001",
     }
     r = requests.post(url + "/register/", json=obj)
-    print(r.text)
+    print("registration response: " + r.text, end="\n\n")
 
 def login():
     obj = {
@@ -19,6 +21,7 @@ def login():
         "password":"Computer2001",
     }
     r = requests.post(url + "/login/", json=obj)
+    print("login response: " + r.text, end="\n\n")
     if(r.status_code==200):
         return json.loads(r.text)["token"]
     else:
