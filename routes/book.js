@@ -15,9 +15,9 @@ router.post("/", auth, function(req, res){
         fs.writeFile(name, buf,() => 
             console.log('download finito!')
         );
-      } catch(err) {
+    } catch(err) {
         console.error(err)
-      }
+    }
     req.body['immagine'] = process.env.URL + name;
     req.body['venditore'] = req.user._id
     var book = new Book(
@@ -50,9 +50,20 @@ router.get("/delete/:id", auth, function(req, res){
     
     Book.deleteOne({ _id: req.params['id'], venditore: req.user._id})
     .then(function(){
-        res.send({"success":true, "message":""});// Success
+        res.send({"success":true, "message":""});
     }).catch(function(error){
-        res.send({"success":false, "message":error.message}); // Failure
+        res.send({"success":false, "message":error.message});
+    });;
+})
+
+//update book by id
+router.post("/update/:id", auth, function(req, res){
+    
+    Book.findOneAndUpdate({_id : req.params['id']},req.body)
+    .then(function(){
+        res.send({"success":true, "message":""});
+    }).catch(function(error){
+        res.send({"success":false, "message":error.message});
     });;
 })
 

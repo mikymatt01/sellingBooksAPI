@@ -32,7 +32,7 @@ def getBookByIsbn():
     print("bookByIsbn response: " + r.text, end="\n\n")
     return json.loads(r.text)
 
-def deleteBookByIsbn(token):
+def deleteBookById(token):
     id="9788839534187"
     headers={
         "x-access-token" : token
@@ -48,4 +48,15 @@ def myBooks(token):
     }
     r = requests.get(url + '/', headers=headers)
     print("myBook response: " + r.text, end="\n\n")
+    return json.loads(r.text)
+
+def update(token, _id):
+    obj={
+        "prezzo":8.50,
+    }
+    headers={
+        "x-access-token" : token
+    }
+    r = requests.post(url + '/update/' + _id, json=obj, headers=headers)
+    print("updateBook response: " + r.text, end="\n\n")
     return json.loads(r.text)
