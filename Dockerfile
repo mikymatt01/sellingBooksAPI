@@ -16,4 +16,3 @@ CMD [ "node", "app.js" ]
 
 #sudo docker build . -t sellingbooks
 #sudo docker run -p 49160:8080 -d sellingbooks
-#psicologia evoluzionista della donna
